@@ -62,4 +62,4 @@
         comment: "Increse max open file limit"
         value: 65536
   roles:
-    - base
+    - ansible-base-ubuntu
