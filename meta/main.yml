@@ -1,5 +1,4 @@
 galaxy_info:
-  role_name: base-ubuntu
   namespace: nahsilabs
   author: Anatolios Laskaris
   description: Configure ubuntu server
