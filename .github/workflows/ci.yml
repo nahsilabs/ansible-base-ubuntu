@@ -38,8 +38,8 @@ jobs:
     needs: lint
 
     strategy:
+      fail-fast: false
       matrix:
-        fail-fast: false
         scenario:
           - ubuntu2004
           - ubuntu2204
