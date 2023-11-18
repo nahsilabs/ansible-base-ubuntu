@@ -1,0 +1,64 @@
+name: ci
+
+on:
+  pull_request:
+    paths-ignore:
+      - ".github/**"
+      - "**.md"
+
+concurrency:
+  group: "molecule-${{ github.ref }}"
+  cancel-in-progress: true
+
+env:
+  PY_COLORS: 1
+  ANSIBLE_FORCE_COLOR: 1
+
+jobs:
+  lint:
+    name: Lint with reviewdog
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run yamllint
+        uses: reviewdog/action-yamllint@v1
+        with:
+          fail_on_error: true
+
+      - name: Run ansible-lint
+        uses: reviewdog/action-ansiblelint@v1
+        with:
+          fail_on_error: true
+
+  molecule:
+    name: Run molecule
+    runs-on: macos-latest
+
+    needs: lint
+
+    strategy:
+      matrix:
+        scenario:
+          - ubuntu2004
+          - ubuntu2204
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+
+      - uses: syphar/restore-virtualenv@v1
+        id: cache
+
+      - uses: syphar/restore-pip-download-cache@v1
+        if: steps.cache.outputs.cache-hit != 'true'
+
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Run ${{ matrix.scenario }} scenario
+        run: molecule test --scenario-name "${{ matrix.scenario }}"

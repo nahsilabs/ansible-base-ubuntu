@@ -1,0 +1,24 @@
+- name: Preflight
+  tags: always
+  include_tasks: 00-preflight.yml
+
+- name: Install and configure Docker
+  tags: docker
+  include_tasks: 01-docker.yml
+
+- name: Install and configure dnsmasq
+  tags: dnsmasq
+  include_tasks: 02-dnsmasq.yml
+
+- name: Manage users
+  tags: users
+  include_tasks: 03-users.yml
+
+- name: Configure system
+  tags:
+    - packages
+    - directories
+    - files
+    - sysctl
+    - limits
+  include_tasks: 04-system.yml

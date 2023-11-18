@@ -1,0 +1,49 @@
+- name: install dnsmasq and openresolv
+  apt:
+    name:
+      - "dnsmasq"
+      - "openresolv"
+    install_recommends: false
+    state: present
+
+- name: create dnsmasq configuration
+  tags: dnsmasq
+  copy:
+    content: "{{ base_dnsmasq_config }}"
+    dest: /etc/dnsmasq.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart dnsmasq
+
+- name: create dnsmasq unitfile
+  copy:
+    content: "{{ base_dnsmasq_unit }}"
+    dest: /etc/systemd/system/dnsmasq.service
+    owner: root
+    group: root
+    mode: 0644
+  when: base_dnsmasq_unit is defined
+  notify: restart dnsmasq
+
+- name: disable systemd-resolved
+  systemd:
+    name: systemd-resolved
+    enabled: false
+  notify: stop systemd-resolved
+
+- name: enable dnsmasq
+  systemd:
+    name: dnsmasq
+    enabled: true
+    daemon_reload: true
+
+- name: configure openresolv
+  tags: dnsmasq
+  copy:
+    content: "{{ base_openresolv_config }}"
+    dest: /etc/resolvconf.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: run resolvconf

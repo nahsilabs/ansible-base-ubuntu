@@ -1,0 +1,20 @@
+galaxy_info:
+  role_name: base-ubuntu
+  namespace: nahsilabs
+  author: Anatolios Laskaris
+  description: Configure ubuntu server
+  issue_tracker_url: https://github.com/nahsilabs/ansible-base-ubuntu/issues
+  min_ansible_version: 2.12
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - focal
+        - jammy
+
+  galaxy_tags:
+    - cloud
+    - system
+    - ubuntu
+
+  dependencies: []
