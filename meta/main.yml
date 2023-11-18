@@ -17,4 +17,4 @@ galaxy_info:
     - system
     - ubuntu
 
-  dependencies: []
+dependencies: []
