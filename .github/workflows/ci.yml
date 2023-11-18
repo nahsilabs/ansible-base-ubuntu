@@ -33,12 +33,13 @@ jobs:
 
   molecule:
     name: Run molecule
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     needs: lint
 
     strategy:
       matrix:
+        fail-fast: false
         scenario:
           - ubuntu2004
           - ubuntu2204
