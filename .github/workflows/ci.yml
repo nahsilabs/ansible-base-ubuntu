@@ -47,11 +47,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install mkisofs
-        run: sudo apt-get install -y mkisofs qemu-system-x86 qemu-utils
-
-      - name: Allow user to use kvm
-        run: sudo usermod runner -a -G kvm
+      - name: Prepare for KVM usage
+        run: |
+          sudo apt-get install -y mkisofs qemu-system-x86 qemu-utils
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+          sudo usermod -a -G kvm $USER
 
       - name: Setup python
         uses: actions/setup-python@v4
@@ -64,7 +66,3 @@ jobs:
 
       - name: Run ${{ matrix.scenario }} scenario
         run: molecule test --scenario-name "${{ matrix.scenario }}"
-
-      - name: Setup tmate session
-        if: always()
-        uses: mxschmitt/action-tmate@v3
