@@ -51,7 +51,7 @@ jobs:
         run: sudo apt-get install -y mkisofs qemu-system-x86 qemu-utils
 
       - name: Allow user to use kvm
-        run: usermod $USER -a -G kvm
+        run: sudo usermod $USER -a -G kvm
 
       - name: Setup python
         uses: actions/setup-python@v4
