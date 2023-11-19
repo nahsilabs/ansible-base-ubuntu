@@ -1,5 +1,6 @@
 galaxy_info:
   namespace: nahsilabs
+  role_name: base_ubuntu
   author: Anatolios Laskaris
   description: Configure ubuntu server
   issue_tracker_url: https://github.com/nahsilabs/ansible-base-ubuntu/issues

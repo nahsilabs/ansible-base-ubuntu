@@ -1,15 +1,11 @@
 driver:
-  name: vagrant
-  provider:
-    name: virtualbox
+  name: molecule-qemu
 
 platforms:
   - name: ubuntu2204
-    box: generic/ubuntu2204
-    memory: 512
-    cpu: 1
-    provider_raw_config_args:
-      - "customize ['modifyvm', :id, '--uartmode1', 'disconnected']"
+    image_url: https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img
+    image_checksum: sha256:https://cloud-images.ubuntu.com/jammy/current/SHA256SUMS
+    network_ssh_port: 2228
 
 provisioner:
   name: ansible
