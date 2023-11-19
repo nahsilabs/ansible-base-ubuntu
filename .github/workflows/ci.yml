@@ -51,7 +51,7 @@ jobs:
         run: sudo apt-get install -y mkisofs qemu-system-x86 qemu-utils
 
       - name: Allow user to use kvm
-        run: whoami && sudo $(whoami) $USER -a -G kvm
+        run: sudo usermod runner -a -G kvm
 
       - name: Setup python
         uses: actions/setup-python@v4
@@ -64,3 +64,7 @@ jobs:
 
       - name: Run ${{ matrix.scenario }} scenario
         run: molecule test --scenario-name "${{ matrix.scenario }}"
+
+      - name: Setup tmate session
+        if: always()
+        uses: mxschmitt/action-tmate@v3
